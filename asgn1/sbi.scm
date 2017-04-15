@@ -43,6 +43,7 @@
             (symbol-put! (car pair) (cadr pair)))
     `(
 
+	(print   ,(lambda (x) (display (x)) ))
         (log10_2 0.301029995663981195213738894724493026768189881)
         (sqrt_2  1.414213562373095048801688724209698078569671875)
         (e       2.718281828459045235360287471352662497757247093)
@@ -62,12 +63,19 @@
 
      ))
 
+(define (what-kind value)
+    (cond ((real? value) 'real)
+          ((vector? value) 'vector)
+          ((procedure? value) 'procedure)
+          (else 'other)))
+
 (define (write-program-by-line filename program)
     (printf "==================================================~n")
     (printf "~a: ~s~n" *run-file* filename)
     (printf "==================================================~n")
     (printf "(~n")
-    (map (lambda (line) (printf "~s~n" line)) program)
+    ;;(map (lambda (line) (printf "~s~n" line)) program)
+    (display (map (lambda (line) (what-kind line)) program) )
     (printf ")~n"))
 
 (define (readlist-from-inputfile filename)
@@ -85,12 +93,12 @@
         (let* ((sbprogfile (car arglist))
                (program (readlist-from-inputfile sbprogfile)))
               (write-program-by-line sbprogfile program)))
-    (newline)
-    (printf "*symbol-table*:~n")
-    (hash-for-each *symbol-table*
-        (lambda (key value)
-                (printf "~s  = ~s~n" key value))
-    ))
+    ;;(newline)
+    ;;(printf "*symbol-table*:~n")
+    ;;(hash-for-each *symbol-table*
+    ;;    (lambda (key value)
+    ;;            (printf "~s  = ~s~n" key value)) )
+    )
 
 (main (vector->list (current-command-line-arguments)))
 
