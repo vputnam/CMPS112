@@ -31,13 +31,6 @@
     (die `("Usage: " ,*run-file* " filename"))
 )
 
-(define (readlist-from-inputfile filename)
-    (let ((inputfile (open-input-file filename)))
-         (if (not (input-port? inputfile))
-             (die `(,*run-file* ": " ,filename ": open failed"))
-             (let ((program (read inputfile)))
-                  (close-input-port inputfile)
-                         program))))
 
 (define *symbol-table* (make-hash))
 (define (symbol-get key)
@@ -77,9 +70,18 @@
     (map (lambda (line) (printf "~s~n" line)) program)
     (printf ")~n"))
 
+(define (readlist-from-inputfile filename)
+    (let ((inputfile (open-input-file filename)))
+         (if (not (input-port? inputfile))
+             (die `(,*run-file* ": " ,filename ": open failed"))
+             (let ((program (read inputfile)))
+                  (close-input-port inputfile)
+                         program))))
+
 (define (main arglist)
     (if (or (null? arglist) (not (null? (cdr arglist))))
         (usage-exit)
+	;; tail recurrsion ?
         (let* ((sbprogfile (car arglist))
                (program (readlist-from-inputfile sbprogfile)))
               (write-program-by-line sbprogfile program)))
