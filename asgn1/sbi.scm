@@ -66,7 +66,7 @@
 (define (what-kind value)
     (cond ((real? value) 'real)
           ((vector? value) 'vector)
-          ((procedure? value) 'procedure)
+          ((symbol? value) 'procedure)
           (else 'other)))
 
 (define (write-program-by-line filename program)
@@ -74,8 +74,8 @@
     (printf "~a: ~s~n" *run-file* filename)
     (printf "==================================================~n")
     (printf "(~n")
-    ;;(map (lambda (line) (printf "~s~n" line)) program)
-    (display (map (lambda (line) (what-kind line)) program) )
+    ;;(map (lambda (line) (printf "~s~n" (caadr line))) program)
+    (display (map (lambda (line) (what-kind (caadr line))) program) )
     (printf ")~n"))
 
 (define (readlist-from-inputfile filename)
