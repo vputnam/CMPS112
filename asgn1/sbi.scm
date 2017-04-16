@@ -43,7 +43,7 @@
             (symbol-put! (car pair) (cadr pair)))
     `(
 
-	(print   ,(lambda (x) (display (x)) ))
+	(print   ,(lambda (x) (printf "~s" x) ))
         (log10_2 0.301029995663981195213738894724493026768189881)
         (sqrt_2  1.414213562373095048801688724209698078569671875)
         (e       2.718281828459045235360287471352662497757247093)
@@ -63,20 +63,26 @@
 
      ))
 
+;; when working, call what kind on function variable & lable 
+;; to access things from the three hash tables 
 (define (what-kind value)
     (cond ((real? value) 'real)
           ((vector? value) 'vector)
-          ((procedure? value) 'procedure)
+          ((symbol? value) 'symbol);;(apply (symbol-get value) "hello" ))
           (else 'other)))
 
 (define (write-program-by-line filename program)
-    (printf "==================================================~n")
-    (printf "~a: ~s~n" *run-file* filename)
-    (printf "==================================================~n")
-    (printf "(~n")
-    ;;(map (lambda (line) (printf "~s~n" line)) program)
-    (display (map (lambda (line) (what-kind line)) program) )
-    (printf ")~n"))
+    ;;(printf "==================================================~n")
+    ;;(printf "~a: ~s~n" *run-file* filename)
+    ;;(printf "==================================================~n")
+    (printf "OUTPUT:~n")
+    ;;(map (lambda (line) (string-split line " ")) program)
+    ( map (lambda (line) (apply (hash-ref *symbol-table* (caadr line))
+                                 (cdadr line) )) program )
+    ;;(display (map (lambda (line) what-kind (caadr line)) program) )
+    (printf "~n"))
+    ;;
+    
 
 (define (readlist-from-inputfile filename)
     (let ((inputfile (open-input-file filename)))
