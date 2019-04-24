@@ -1,0 +1,83 @@
+Welcome to SWI-Prolog (Multi-threaded, 64 bits, Version 7.2.3)
+Copyright (c) 1990-2015 University of Amsterdam, VU Amsterdam
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+Please visit http://www.swi-prolog.org for details.
+
+For help, use ?- help(Topic). or ?- apropos(Word).
+
+$Id: group2.tests,v 1.2 2016-11-21 14:06:16-08 - - $
+true.
+
+true.
+
+true.
+
+Atime is: 14.123516113295912
+Atime is: 17.46557803314982
+Atime is: 19.96120676410519
+Atime is: 20.46557803314982
+Atime is: 20.46557803314982
+Atime is: 20.46557803314982
+Atime is: 20.46557803314982
+Atime is: 22.46557803314982
+Atime is: 16.123516113295913
+Atime is: 20.46557803314982
+Atime is: 20.46557803314982
+Atime is: 20.46557803314982
+Atime is: 20.46557803314982
+Atime is: 22.46557803314982
+Atime is: 21.123516113295913
+Your search did not return any results.
+false.
+
+Atime is: 9.060265624444552
+
+     depart  sfo  San Francisco   09:00
+     arrive  lax  Los Angeles     09:04
+     depart  lax  Los Angeles     12:00
+     arrive  sjc  San Jose        12:37
+true.
+
+
+     depart  sjc  San Jose        11:15
+     arrive  lax  Los Angeles     11:52
+true.
+
+Atime is: 10.359631949945754
+Atime is: 13.91242152797753
+Atime is: 22.857387238864508
+Atime is: 13.91242152797753
+Atime is: 13.91242152797753
+Atime is: 22.857387238864508
+Atime is: 13.91242152797753
+Atime is: 13.91242152797753
+Atime is: 22.857387238864508
+Atime is: 13.91242152797753
+
+     depart  sfo  San Francisco   09:00
+     arrive  lax  Los Angeles     10:22
+     depart  lax  Los Angeles     13:30
+     arrive  sea  Seattle-Tacoma  15:25
+true.
+
+Atime is: 13.677193327821852
+
+     depart  mia  Miami           09:00
+     arrive  atl  Atlanta         13:41
+     depart  atl  Atlanta         14:30
+     arrive  lax  Los Angeles     18:23
+true.
+
+Atime is: 14.112330345346766
+Atime is: 18.112330345346766
+Your search did not return any results.
+false.
+
+
+     depart  lax  Los Angeles     14:00
+     arrive  nyc  New York City   18:55
+true.
+
+
+% halt

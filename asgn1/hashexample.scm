@@ -69,19 +69,13 @@
          (else #f))
 )
 
+
 ;;
 ;; Now print out the value of several expressions.
 ;;
 (for-each
     (lambda (expr) (show expr (evalexpr expr)))
-    '( (* var 7)
-       (- 3 4)
+    '( 
        (+ (* var 7) (- 3 4))
-))
-
-;;
-;; Just to verify that we got all the way.
-;;
-(display "DONE.") (newline)
-
+) )
 

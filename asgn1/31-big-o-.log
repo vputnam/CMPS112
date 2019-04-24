@@ -1,0 +1,8 @@
+hash-ref: no value found for key
+  key: input
+  context...:
+   /afs/cats.ucsc.edu/users/g/vputnam/cs112/asgn1/./sbi.scm:127:0: check-line
+   /afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket-6.1/share/racket/collects/racket/private/map.rkt:26:19: loop
+   /afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket-6.1/share/racket/collects/racket/private/map.rkt:26:19: loop
+   /afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket-6.1/share/racket/collects/racket/private/map.rkt:26:19: loop
+   /afs/cats.ucsc.edu/courses/cmps112-wm/usr/racket-6.1/share/racket/collects/racket/private/map.rkt:26:19: loop

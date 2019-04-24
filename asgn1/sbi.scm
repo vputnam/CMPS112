@@ -31,52 +31,130 @@
     (die `("Usage: " ,*run-file* " filename"))
 )
 
+(define *label-table* (make-hash))
+(define (lab-get key)
+        (hash-ref *label-table* key))
+(define (lab-put! key value)
+        (hash-set! *label-table* key value))
 
-(define *symbol-table* (make-hash))
-(define (symbol-get key)
-        (hash-ref *symbol-table* key))
-(define (symbol-put! key value)
-        (hash-set! *symbol-table* key value))
+
+(define *variable-table* (make-hash))
+(define (var-get key)
+        (hash-ref *variable-table* key))
+(define (var-put! key value)
+        (hash-set! *variable-table* key value))
+(define (var-array! key dim)
+        (hash-set! *variable-table* key (make-vector dim) ))
+
+(for-each
+     (lambda (pair)
+             (var-put! (car pair) (cadr pair)))
+        `(
+             (+  ,(lambda(x) (+ 0 x) ))
+             (-  ,(lambda(x) (- 0 x) ))
+             (log10_2 0.301029995663981195213738894724493026768189881)
+             (sqrt_2  1.414213562373095048801688724209698078569671875)
+             (e       2.718281828459045235360287471352662497757247093)
+             (pi      3.141592653589793238462643383279502884197169399)
+             (ceil    ,ceiling)
+             (exp     ,exp)
+             (floor   ,floor)
+             (log     ,log)
+             (sqrt    ,sqrt)
+             (atan    ,atan)
+             (sin     ,sin)
+             (cos     ,cos)
+             (tan     ,tan)
+             (acos    ,acos)
+             (asin    ,asin )
+             (abs     ,abs)
+             (round   ,round)    
+          ))
+
+(define *function-table* (make-hash))
+(define (func-get key)
+        (hash-ref *function-table* key))
+(define (func-put! key value)
+        (hash-set! *function-table* key value))
 
 (for-each
     (lambda (pair)
-            (symbol-put! (car pair) (cadr pair)))
+            (func-put! (car pair) (cadr pair)))
     `(
-
-	(print   ,(lambda (x) (display (x)) ))
-        (log10_2 0.301029995663981195213738894724493026768189881)
-        (sqrt_2  1.414213562373095048801688724209698078569671875)
-        (e       2.718281828459045235360287471352662497757247093)
-        (pi      3.141592653589793238462643383279502884197169399)
-        (div     ,(lambda (x y) (floor (/ x y))))
+        (goto   ,(lambda (x) (map (lambda (line) 
+(check-line line )) (lab-get (car x)) )  )) 
+        (dim    ,(lambda (x) (var-array! (car x) (cadar x) )))
+        (let    ,(lambda (x) (var-put! (car x) (evalexpr (cadr x)) )))
+        (print  ,(lambda (x) (cond ((null? (cdr x ))
+                                    (cond ((string? (car x) )
+ (display (car x)) (printf "~n"))
+                                    ((number? (car x) ) 
+(display (car x)) (printf "~n"))
+                                    (else (display (var-get (car x))) 
+(printf "~n")) ))
+                                    (else (display (car x))
+                                      (display (evalexpr (car(cdr x))))
+                                    (printf "~n") )) ))
+        (/     ,(lambda (x y) (floor (/ x y))))
         (log10   ,(lambda (x) (/ (log x) (log 10.0))))
         (mod     ,(lambda (x y) (- x (* (div x y) y))))
         (quot    ,(lambda (x y) (truncate (/ x y))))
         (rem     ,(lambda (x y) (- x (* (quot x y) y))))
-        (+       ,+)
+        (+       ,(lambda (x y) (+ x y) ))
+        (-       ,(lambda (x y) (- x y) ))
+        (*       ,(lambda (x y) (* x y) ))
         (^       ,expt)
-        (ceil    ,ceiling)
-        (exp     ,exp)
-        (floor   ,floor)
-        (log     ,log)
-        (sqrt    ,sqrt)
 
+ 
      ))
 
-(define (what-kind value)
-    (cond ((real? value) 'real)
-          ((vector? value) 'vector)
-          ((symbol? value) 'procedure)
-          (else 'other)))
+ (define (evalexpr expr)
+   (cond ((number? expr) (+ expr 0.0)) 
+         ((symbol? expr) (cond ((null?
+ (var-get expr))(hash-ref *function-table* expr #f))
+                               (else 
+(hash-ref *variable-table* expr #f))))
+         ((pair? expr)   (cond ((null? (cddr expr)) 
+(apply (hash-ref *variable-table* (car expr))
+                                (map evalexpr (cdr expr))))
+                               (else (apply
+(hash-ref *function-table* (car expr))
+                                (map evalexpr (cdr expr))))
+                         ))
+         (else #f))
+ )
 
-(define (write-program-by-line filename program)
-    (printf "==================================================~n")
-    (printf "~a: ~s~n" *run-file* filename)
-    (printf "==================================================~n")
-    (printf "(~n")
-    ;;(map (lambda (line) (printf "~s~n" (caadr line))) program)
-    (display (map (lambda (line) (what-kind (caadr line))) program) )
-    (printf ")~n"))
+(define (check-line line)
+    (cond [(null? (cdr line)) 'null]
+            [(< (length (cdr line)) 2)
+                 (cond [(list? (cadr line)) 
+                        (cond [(< (length (cadr line)) 2) 'null]
+                 (else
+                        (apply 
+(hash-ref *function-table* (caadr line)) (list(cdadr line)) )))
+                     ]
+                 (else 
+                        (apply 
+(hash-ref *function-table* (caadr line)) (list(cdadr line)) )))
+           ]
+          ((symbol? (cadr line)) 
+(apply (hash-ref *function-table* (caaddr line)) (list(cdaddr line))))
+          (else
+(apply (hash-ref *function-table* (caadr line)) (list(cdadr line)) ))
+))
+
+(define (insert-label program)
+     (map (lambda (line)
+          (when ( = 3 (length line))
+                (hash-set! *label-table* (cadr line)
+                           (member line program) ) 
+          )
+     )program)
+)
+
+(define (ctrl-trans program )
+          (map (lambda (line) (check-line line )) program ) 
+)
 
 (define (readlist-from-inputfile filename)
     (let ((inputfile (open-input-file filename)))
@@ -86,19 +164,28 @@
                   (close-input-port inputfile)
                          program))))
 
+(define (filter p? list)
+        (if (null? list) '()
+            (let ((a (car list))
+                  (fd (filter p? (cdr list))))
+                 (if (p? a) (cons a fd) 
+		  fd ))))
+
+(define (length x)
+        (define (len x n)
+                (if (null? x) n
+                    (len (cdr x) (+ n 1))))
+        (len x 0))
+
+
 (define (main arglist)
+    (display (filter (lambda (n) (< n 4)) '(1 2 3 4 5 6 7)) )
     (if (or (null? arglist) (not (null? (cdr arglist))))
         (usage-exit)
-	;; tail recurrsion ?
         (let* ((sbprogfile (car arglist))
-               (program (readlist-from-inputfile sbprogfile)))
-              (write-program-by-line sbprogfile program)))
-    ;;(newline)
-    ;;(printf "*symbol-table*:~n")
-    ;;(hash-for-each *symbol-table*
-    ;;    (lambda (key value)
-    ;;            (printf "~s  = ~s~n" key value)) )
-    )
+             (program (readlist-from-inputfile sbprogfile)))
+             (insert-label program)
+             (ctrl-trans program)
+) ))
 
 (main (vector->list (current-command-line-arguments)))
-

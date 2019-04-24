@@ -1,0 +1,12 @@
+Object: '' error: interrupted!!!
+SystemExceptions.UserInterrupt(Exception)>>signal (ExcHandling.st:254)
+SystemExceptions.UserInterrupt class(Exception class)>>signal (ExcHandling.st:151)
+String(Object)>>userInterrupt (Object.st:1414)
+String(Collection)>>copyEmpty: (Collection.st:543)
+String>>, (String.st:90)
+[] in FileStream>>uOption: (hzip.st:680)
+String(SequenceableCollection)>>do: (SeqCollect.st:827)
+FileStream>>uOption: (hzip.st:679)
+optimized [] in UndefinedObject>>executeStatements (hzip.st:842)
+Interval>>do: (Interval.st:95)
+UndefinedObject>>executeStatements (hzip.st:788)

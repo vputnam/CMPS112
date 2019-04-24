@@ -1,0 +1,43 @@
+
+PLAN.txt
+
+====
+done:
+====
+took in one file
+took in options
+read file line by line
+read file char by char line by line
+place each char in frequency table
+added EOF to frequency table 
+printed frequency table
+created priority list
+put each nonempty listing in freq table in node
+placed each node in priority list
+printed priority list to make sure it works
+turned priority list into tree
+added -d -t -c -u options 
+
+====
+to do (up through the current step):
+====
+
+add x0A to freq table 
+make sure the priority queue is ordering things correctly (may need sort blocks?)
+
+create post order traversal of tree
+use this to create bitstrings for each leaf (character)
+put these bitstrings in encoding table
+
+====
+current step in pdf: compression part d. 
+====
+
+====
+notes
+====
+   an encoding table is declared on line 151. 
+   an attempt at a postorder traversal func is on line 95.
+   that func is called (commented out) on line 231.
+   current print statement (inspect) is at the end of line 225.
+

@@ -1,0 +1,3 @@
+oddlen([_]).
+oddlen([H1,H2|T]) :- oddlen(T).
+

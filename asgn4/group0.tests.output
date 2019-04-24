@@ -1,0 +1,22 @@
+Welcome to SWI-Prolog (Multi-threaded, 64 bits, Version 7.2.3)
+Copyright (c) 1990-2015 University of Amsterdam, VU Amsterdam
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+Please visit http://www.swi-prolog.org for details.
+
+For help, use ?- help(Topic). or ?- apropos(Word).
+
+$Id: group0.tests,v 1.2 2016-11-21 14:06:16-08 - - $
+true.
+
+true.
+
+true.
+
+
+     depart  sea  Seattle-Tacoma  11:00
+     arrive  lax  Los Angeles     12:55
+true.
+
+
+% halt
